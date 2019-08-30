@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+{% form_theme formCommande _self %}
+
+
+{% block title %}Bienvenue sur la billeterie en ligne du Louvre{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />
+{% endblock %}
+
+
+
+{% block body %}
+
+    <div class="row homeL">
+        
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    {% if error == true %}
+                        <p class="alert alert-danger"> Désolé la capacité maximum pour le jour demandé à été atteinte!</p>
+                    {% endif %}
+
+                    {% if type == true %}
+                        <p class="alert alert-danger"> Après 14h, vous ne pouvez prendre que des tickets demi-journée pour le jour même</p>
+                    {% endif %}
+
+                    <h2 class="text-center">Entrez les informations de la commande</h2>
+                    <hr>
+                    {{ form_start(formCommande) }}
+                    <div class="form-group">
+                        {{ form_widget(formCommande) }}
+                    </div>
+                    
+
+                    <button class="btn btn-primary" type="submit">Continuer</button>
+                    {{ form_end(formCommande) }}
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block _commande_tickets_widget %}
+
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <button type="button" id="add_ticket" class="btn btn-primary"> Ajouter des tickets </button>
+    </div>
+
+{% endblock %}
+
+
+{% block _commande_tickets_entry_row %}
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _commande_tickets_entry_widget %}
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-2"> {{ form_widget(form.name) }} </div>
+            <div class="col-2"> {{ form_widget(form.surname) }} </div>
+            <div class="col-2"> {{ form_widget(form.country) }} </div>
+            <div class="col-4"> {{ form_widget(form.birthday) }} </div>
+            <div class="col-2"> {{ form_widget(form.reducedPrice) }} </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+    <script> 
+        $(document).ready(function(){
+            
+            const index = $('#commande_tickets div.form-group').length;
+
+            $('#commande_VisitDay').datepicker({
+                format: 'dd/mm/yyyy',
+                daysOfWeekDisabled: '02',
+                datesDisabled: [
+                    {% for i in 1900..2019 %}
+                        '01/05/{{ i }}',
+                        '01/11/{{ i }}',
+                        '25/12/{{ i }}',
+                    {% endfor %}
+                ],
+                startDate: new Date()
+            });
+        })
+    
+    </script>
+    
+    <script>
+        $('#add_ticket').click(function(){
+            const index = $('#commande_tickets div.form-group').length;
+            const tmpl = $('#commande_tickets').data('prototype').replace(/__name__/g, index);
+
+            $('#commande_tickets').append(tmpl);
+
+            $('#commande_tickets_' + index + '_birthday').datepicker({
+                format: 'dd/mm/yyyy',
+                endDate: new Date()
+            });
+        });
+    </script>
+{% endblock %}
