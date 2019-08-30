@@ -1,0 +1,38 @@
+<h1>Musée du louvre </h1>
+<p><img src="{{ asset('images/logo-louvre.jpg') }}"></p>
+
+<h3>Merci pour votre achat, voici les information de votre ticket</h3>
+
+<h3>information général :</h3>
+<p>Code de réservation : {{ codeReservation }}</p>
+<p>Jour de la visite : {{ commande.VisitDay|date("d/m/Y") }}</p>
+<p>Type de ticket : {{ commande.TicketType|replace({'j1': "Journée", 'j2': "Demi-journée"}) }} </p>
+<p>Votre mail : {{ commande.Email }}</p>
+<p>Tarif payé : {{ price }}</p>
+
+<hr>
+
+<h3>Information des billets : </h3>
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Pays</th>
+            <th scope="col">Date de naissance</th>
+            <th scope="col">Prix réduit</th>
+        </tr>
+     </thead>
+
+    <tbody>
+        {% for ticket in commande.tickets %}
+        <tr>
+            <td>{{ ticket.name }}</td>
+            <td>{{ ticket.surname }}</td>
+            <td>{{ ticket.country }}</td>
+            <td>{{ ticket.birthday|date("d/m/Y") }}</td>
+            <td>{{ ticket.reducedPrice|replace({'1': "Oui", '0' : "Non"}) }}</td>
+         </tr>
+        {% endfor %}
+    </tbody>
+</table>
