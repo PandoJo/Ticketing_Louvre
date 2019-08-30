@@ -1,0 +1,13 @@
+body{
+    background-image: url("/images/louvre1.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+#head{
+    margin-top: 150px;
+}
+
+.homeL{
+    margin-top: 50px;
+}
