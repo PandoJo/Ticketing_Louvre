@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur la billeterie en ligne du Louvre{% endblock %}
+
+{% block body %}
+
+    <div class="row homeL">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="text-center"> Récapitulation de la commande</h1>
+                    <h3>Informations personnelles :</h3>
+                    <div><span class="text-primary">Jour de la visite : </span> {{ commande.VisitDay|date("d/m/Y") }}</div>
+                    <div><span class="text-primary">Type de ticket : </span> {{ commande.TicketType|replace({'j1': "Journée", 'j2': "Demi-journée"}) }}</div>
+                    <div><span class="text-primary">Votre adresse email : </span> {{ commande.Email }}</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+    <div class="row homeL">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Liste des tickets :</h3>
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Pays</th>
+                                <th scope="col">Date de naissance</th>
+                                <th scope="col">Prix réduit</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for ticket in commande.tickets %}
+                                    <tr>
+                                        <td>{{ ticket.name }}</td>
+                                       <td>{{ ticket.surname }}</td>
+                                       <td>{{ ticket.country }}</td>
+                                       <td>{{ ticket.birthday|date("d/m/Y") }}</td>
+                                       <td>{{ ticket.reducedPrice|replace({'1': "Oui", '0' : "Non"}) }}</td>
+                                    </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+    <div class="row homeL">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Prix total à payer : {{ price }} Euros</h3>
+                    <a class="btn btn-primary" href="/commande_n°{{id}}&amp;price={{price}}" role="button">Passer au paiement</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+
+{% endblock %}
